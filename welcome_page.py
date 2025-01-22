@@ -76,10 +76,10 @@ class DynamicGUIApp(ctk.CTk):
     def show_login(self):
         self.clear_panel()
         login_label = ctk.CTkLabel(self.panel_frame, text="LOG IN", font=("Arial", 30), text_color="black")
-        login_label.grid(row=0, column=0, columnspan=2, pady=100)
+        login_label.grid(row=0, column=0, columnspan=2, pady=80)
 
-        email_label = ctk.CTkLabel(self.panel_frame, text="Email:", font=("Arial", 20))
-        email_label.grid(row=1, column=0, padx=2, pady=5, sticky="e", )
+        email_label = ctk.CTkLabel(self.panel_frame, text="Email:", font=("Arial", 15))
+        email_label.grid(row=1, column=0, padx=15, pady=5, sticky="e", )
         email_entry = ctk.CTkEntry(
             self.panel_frame, 
             width=260,
@@ -91,8 +91,8 @@ class DynamicGUIApp(ctk.CTk):
             height=50)
         email_entry.grid(row=1, column=1, padx=15, pady=5)
 
-        password_label = ctk.CTkLabel(self.panel_frame, text="Password:", font=("Arial", 20))
-        password_label.grid(row=2, column=0, padx=2, pady=5, sticky="e")
+        password_label = ctk.CTkLabel(self.panel_frame, text="Password:", font=("Arial", 15))
+        password_label.grid(row=2, column=0, padx=15, pady=5, sticky="e")
         password_entry = ctk.CTkEntry(
             self.panel_frame, 
             width=260, show="*",
@@ -124,28 +124,87 @@ class DynamicGUIApp(ctk.CTk):
 
     def show_signup(self):
         self.clear_panel()
-        signup_label = ctk.CTkLabel(self.panel_frame, text="Sign up", font=("Arial", 18), text_color="black")
-        signup_label.grid(row=0, column=0, pady=10)
+        signup_label = ctk.CTkLabel(self.panel_frame, text="Sign up", font=("Arial", 30), text_color="black")
+        signup_label.grid(row=0, column=0, columnspan=2, pady=50)
 
-        name_label = ctk.CTkLabel(self.panel_frame, text="Name:", font=("Arial", 12))
-        name_label.grid(row=1, column=0, padx=10, pady=5, sticky="e")
-        name_entry = ctk.CTkEntry(self.panel_frame, width=200)
-        name_entry.grid(row=1, column=1, padx=10, pady=5)
+        name_label = ctk.CTkLabel(self.panel_frame, text="Name:", font=("Arial", 15))
+        name_label.grid(row=1, column=0, padx=15, pady=5, sticky="e")
+        name_entry = ctk.CTkEntry(
+            self.panel_frame, 
+            width=260,
+            placeholder_text="Enter your name",
+            placeholder_text_color="gray28",
+            fg_color="gray89",
+            border_color="gray89",
+            corner_radius=5,
+            height=50)
 
-        email_label = ctk.CTkLabel(self.panel_frame, text="Email:", font=("Arial", 12))
-        email_label.grid(row=2, column=0, padx=10, pady=5, sticky="e")
-        email_entry = ctk.CTkEntry(self.panel_frame, width=200)
-        email_entry.grid(row=2, column=1, padx=10, pady=5)
+        name_entry.grid(row=1, column=1, padx=15, pady=5)
 
-        contact_label = ctk.CTkLabel(self.panel_frame, text="Contact Number:", font=("Arial", 12))
-        contact_label.grid(row=3, column=0, padx=10, pady=5, sticky="e")
-        contact_entry = ctk.CTkEntry(self.panel_frame, width=200)
-        contact_entry.grid(row=3, column=1, padx=10, pady=5)
+        email_label = ctk.CTkLabel(self.panel_frame, text="Email:", font=("Arial", 15))
+        email_label.grid(row=2, column=0, padx=15, pady=5, sticky="e")
+        email_entry = ctk.CTkEntry(
+            self.panel_frame, 
+            width=260,
+            placeholder_text="Enter your email",
+            placeholder_text_color="gray28",
+            fg_color="gray89",
+            border_color="gray89",
+            corner_radius=5,
+            height=50
+        )
+        email_entry.grid(row=2, column=1, padx=15, pady=5)
 
-        password_label = ctk.CTkLabel(self.panel_frame, text="Password:", font=("Arial", 12))
-        password_label.grid(row=4, column=0, padx=10, pady=5, sticky="e")
-        password_entry = ctk.CTkEntry(self.panel_frame, width=200, show="*")
-        password_entry.grid(row=4, column=1, padx=10, pady=5)
+        contact_label = ctk.CTkLabel(self.panel_frame, text="Contact:", font=("Arial", 15))
+        contact_label.grid(row=3, column=0, padx=15, pady=5, sticky="e")
+        contact_entry = ctk.CTkEntry(
+            self.panel_frame, 
+            width=260,
+            placeholder_text="Enter your number",
+            placeholder_text_color="gray28",
+            fg_color="gray89",
+            border_color="gray89",
+            corner_radius=5,
+            height=50
+        )
+        contact_entry.grid(row=3, column=1, padx=15, pady=5)
+
+        password_label = ctk.CTkLabel(self.panel_frame, text="Password:", font=("Arial", 15))
+        password_label.grid(row=4, column=0, padx=15, pady=5, sticky="e")
+        password_entry = ctk.CTkEntry(
+            self.panel_frame, 
+            width=260,
+            placeholder_text="Enter your password",
+            placeholder_text_color="gray28",
+            fg_color="gray89",
+            border_color="gray89",
+            corner_radius=5,
+            height=50,
+            show="*")
+        password_entry.grid(row=4, column=1, padx=15, pady=5)
+
+        # Button frame for better alignment
+        button_frame = ctk.CTkFrame(self.panel_frame, fg_color="transparent")
+        button_frame.grid(row=5, column=0, columnspan=2, pady=10)
+
+        # Back button
+        back_button = ctk.CTkButton(
+            button_frame, 
+            text="Back", 
+            fg_color="green", 
+            text_color="white", 
+            width=100,
+            command=self.back_to_welcome)
+        back_button.pack(side="left", padx=10)
+
+        back_button = ctk.CTkButton(
+            button_frame, 
+            text="Submit", 
+            fg_color="green", 
+            text_color="white", 
+            width=100,
+            command=self.back_to_welcome)
+        back_button.pack(side="left", padx=10)
 
     def back_to_welcome(self):
         # Clear the main frame
@@ -158,27 +217,6 @@ class DynamicGUIApp(ctk.CTk):
 
         self.signup_button = ctk.CTkButton(self.panel_frame, text="Sign Up", command=self.show_signup)
         self.signup_button.place(relx=0.5, rely=0.5, anchor="center")
-        """
-        # Login button
-        login_button = ctk.CTkButton(
-            button_frame,
-            text="Log In",
-            command=self.show_login,
-            font=("Arial", 16),
-            width=150
-        )
-        login_button.pack(pady=(100, 20))
-
-        # Signup button
-        signup_button = ctk.CTkButton(
-            button_frame,
-            text="Sign Up",
-            command=self.show_signup,
-            font=("Arial", 16),
-            width=150
-        )
-        signup_button.pack(pady=20)
-        """
 
     def clear_panel(self):
         for widget in self.panel_frame.winfo_children():
