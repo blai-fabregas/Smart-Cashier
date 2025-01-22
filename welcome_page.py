@@ -1,16 +1,21 @@
 from math import log
 import customtkinter as ctk
 from PIL import Image
+from numpy import place
+
 
 
 class DynamicGUIApp(ctk.CTk):
     def __init__(self):
         super().__init__()
-        self.title("Dynamic GUI with Image")
+        self.title("Smart Cashier App")
         self.configure_gui()
         self.create_widgets()
+        
 
     def configure_gui(self):
+        ctk.set_default_color_theme("green")
+
         # Get screen dimensions
         screen_width = self.winfo_screenwidth()
         screen_height = self.winfo_screenheight()
@@ -26,6 +31,7 @@ class DynamicGUIApp(ctk.CTk):
         # Store dimensions for dynamic resizing
         self.window_width = window_width
         self.window_height = window_height
+
 
     def create_widgets(self):
         # Main frame
@@ -73,25 +79,53 @@ class DynamicGUIApp(ctk.CTk):
         login_label.grid(row=0, column=0, columnspan=2, pady=100)
 
         email_label = ctk.CTkLabel(self.panel_frame, text="Email:", font=("Arial", 20))
-        email_label.grid(row=1, column=0, padx=10, pady=5, sticky="e", )
-        email_entry = ctk.CTkEntry(self.panel_frame, width=250)
-        email_entry.grid(row=1, column=1, padx=10, pady=5)
+        email_label.grid(row=1, column=0, padx=2, pady=5, sticky="e", )
+        email_entry = ctk.CTkEntry(
+            self.panel_frame, 
+            width=260,
+            placeholder_text="Enter your email",
+            placeholder_text_color="gray28",
+            fg_color="gray89",
+            border_color="gray89",
+            corner_radius=5,
+            height=50)
+        email_entry.grid(row=1, column=1, padx=15, pady=5)
 
         password_label = ctk.CTkLabel(self.panel_frame, text="Password:", font=("Arial", 20))
-        password_label.grid(row=2, column=0, padx=10, pady=5, sticky="e")
-        password_entry = ctk.CTkEntry(self.panel_frame, width=250, show="*")
-        password_entry.grid(row=2, column=1, padx=10, pady=5)
+        password_label.grid(row=2, column=0, padx=2, pady=5, sticky="e")
+        password_entry = ctk.CTkEntry(
+            self.panel_frame, 
+            width=260, show="*",
+            placeholder_text="Enter your password",
+            placeholder_text_color="gray28",
+            fg_color="gray89",
+            border_color="gray89",
+            corner_radius=5,
+            height=50)
+        password_entry.grid(row=2, column=1, padx=15, pady=5)
         
-        #Create buttons to enter/back.
-        back_button = ctk.CTkButton(self.panel_frame, text="Back")
-        back_button.grid(row=3, column=0, padx=10, pady=5)
-        login_button = ctk.CTkButton(self.panel_frame, text="Log In", command=self.create_welcome_section)
-        login_button.grid(row=3, column=1, columnspan=2, padx=10, pady=20)
+        # Button frame for better alignment
+        button_frame = ctk.CTkFrame(self.panel_frame, fg_color="transparent")
+        button_frame.grid(row=3, column=0, columnspan=2, pady=10)
+
+        # Back button
+        back_button = ctk.CTkButton(
+            button_frame, 
+            text="Back", 
+            fg_color="green", 
+            text_color="white", 
+            width=100,
+            command=self.back_to_welcome)
+        back_button.pack(side="left", padx=10)
+
+        # Log In button
+        login_button = ctk.CTkButton(button_frame, text="Log In", fg_color="green", text_color="white", width=100)
+        login_button.pack(side="left", padx=10)
 
     def show_signup(self):
         self.clear_panel()
         signup_label = ctk.CTkLabel(self.panel_frame, text="Sign up", font=("Arial", 18), text_color="black")
-        signup_label.grid(row=0, column=0, columnspan=2, pady=10)
+        signup_label.grid(row=0, column=0, pady=10)
 
         name_label = ctk.CTkLabel(self.panel_frame, text="Name:", font=("Arial", 12))
         name_label.grid(row=1, column=0, padx=10, pady=5, sticky="e")
@@ -112,6 +146,39 @@ class DynamicGUIApp(ctk.CTk):
         password_label.grid(row=4, column=0, padx=10, pady=5, sticky="e")
         password_entry = ctk.CTkEntry(self.panel_frame, width=200, show="*")
         password_entry.grid(row=4, column=1, padx=10, pady=5)
+
+    def back_to_welcome(self):
+        # Clear the main frame
+        self.clear_panel()
+
+        # Buttons for Log In and Sign Up
+
+        self.login_button = ctk.CTkButton(self.panel_frame, text="Log In", command=self.show_login)
+        self.login_button.place(relx=0.5, rely=0.3, anchor="center")
+
+        self.signup_button = ctk.CTkButton(self.panel_frame, text="Sign Up", command=self.show_signup)
+        self.signup_button.place(relx=0.5, rely=0.5, anchor="center")
+        """
+        # Login button
+        login_button = ctk.CTkButton(
+            button_frame,
+            text="Log In",
+            command=self.show_login,
+            font=("Arial", 16),
+            width=150
+        )
+        login_button.pack(pady=(100, 20))
+
+        # Signup button
+        signup_button = ctk.CTkButton(
+            button_frame,
+            text="Sign Up",
+            command=self.show_signup,
+            font=("Arial", 16),
+            width=150
+        )
+        signup_button.pack(pady=20)
+        """
 
     def clear_panel(self):
         for widget in self.panel_frame.winfo_children():
