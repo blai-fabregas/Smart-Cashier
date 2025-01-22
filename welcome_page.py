@@ -1,3 +1,4 @@
+from math import log
 import customtkinter as ctk
 from PIL import Image
 
@@ -15,8 +16,8 @@ class DynamicGUIApp(ctk.CTk):
         screen_height = self.winfo_screenheight()
 
         # Set the window size dynamically (80% of screen size)
-        window_width = int(screen_width * 0.8)
-        window_height = int(screen_height * 0.8)
+        window_width = int(screen_width * 0.7)
+        window_height = int(screen_height * 0.7)
         x_position = int((screen_width - window_width) / 2)
         y_position = int((screen_height - window_height) / 2)
 
@@ -68,18 +69,24 @@ class DynamicGUIApp(ctk.CTk):
 
     def show_login(self):
         self.clear_panel()
-        login_label = ctk.CTkLabel(self.panel_frame, text="LOG IN", font=("Arial", 18), text_color="black")
-        login_label.grid(row=0, column=0, columnspan=2, pady=10)
+        login_label = ctk.CTkLabel(self.panel_frame, text="LOG IN", font=("Arial", 30), text_color="black")
+        login_label.grid(row=0, column=0, columnspan=2, pady=100)
 
-        email_label = ctk.CTkLabel(self.panel_frame, text="Email:", font=("Arial", 12))
-        email_label.grid(row=1, column=0, padx=10, pady=5, sticky="e")
-        email_entry = ctk.CTkEntry(self.panel_frame, width=200)
+        email_label = ctk.CTkLabel(self.panel_frame, text="Email:", font=("Arial", 20))
+        email_label.grid(row=1, column=0, padx=10, pady=5, sticky="e", )
+        email_entry = ctk.CTkEntry(self.panel_frame, width=250)
         email_entry.grid(row=1, column=1, padx=10, pady=5)
 
-        password_label = ctk.CTkLabel(self.panel_frame, text="Password:", font=("Arial", 12))
+        password_label = ctk.CTkLabel(self.panel_frame, text="Password:", font=("Arial", 20))
         password_label.grid(row=2, column=0, padx=10, pady=5, sticky="e")
-        password_entry = ctk.CTkEntry(self.panel_frame, width=200, show="*")
+        password_entry = ctk.CTkEntry(self.panel_frame, width=250, show="*")
         password_entry.grid(row=2, column=1, padx=10, pady=5)
+        
+        #Create buttons to enter/back.
+        back_button = ctk.CTkButton(self.panel_frame, text="Back")
+        back_button.grid(row=3, column=0, padx=10, pady=5)
+        login_button = ctk.CTkButton(self.panel_frame, text="Log In", command=self.create_welcome_section)
+        login_button.grid(row=3, column=1, columnspan=2, padx=10, pady=20)
 
     def show_signup(self):
         self.clear_panel()
