@@ -6,17 +6,21 @@ class ShoppingApp(ctk.CTk):
         super().__init__()
         self.title("Smart Cashier App")
         self.configure_gui()
+        self.background_color = ""
 
     def configure_gui(self):
         # Get screen dimensions
-        self.screen_width = self.winfo_screenwidth()
-        self.screen_height = self.winfo_screenheight()
+        screen_width = self.winfo_screenwidth()
+        screen_height = self.winfo_screenheight()
 
+        # Set window size to 80% of screen size
+        self.screen_width  = int(screen_width)
+        self.screen_height = int(screen_height)
         # Set the window size dynamically (80% of screen size)
-        window_width = int(self.screen_width * 0.7)
-        window_height = int(self.screen_height * 0.7)
-        x_position = int((self.screen_width - window_width) / 2)
-        y_position = int((self.screen_height - window_height) / 2)
+        window_width = int(screen_width * 0.7)
+        window_height = int(screen_height * 0.7)
+        x_position = int((screen_width - window_width) / 2)
+        y_position = int((screen_height - window_height) / 2)
 
         self.geometry(f"{window_width}x{window_height}+{x_position}+{y_position}")
 
@@ -28,29 +32,32 @@ class ShoppingApp(ctk.CTk):
             root, 
             corner_radius=0, 
             width=int(self.screen_width * 0.7),
-            height=int(self.screen_height * 0.1),
-            border_color="red")
+            height=int(self.screen_height * 0.1))
         
-        self.main_frame.pack(fill=ctk.BOTH, expand=True)
+        self.main_frame.pack(
+            fill=ctk.BOTH, 
+            expand=True,
+            pady=10)
 
         # Top bar
         top_frame = ctk.CTkFrame(self.main_frame, corner_radius=0)
-        top_frame.pack(side=ctk.TOP, fill=ctk.X)
+        top_frame.pack(side=ctk.TOP, fill=ctk.X)  # Use `pack` for top_frame itself
 
+        # Use `grid` for arranging widgets inside `top_frame`
         group_label = ctk.CTkLabel(top_frame, text="Group Name", font=ctk.CTkFont(size=16, weight="bold"))
-        group_label.pack(side=ctk.LEFT, padx=10)
+        group_label.grid(row=0, column=0, padx=10, sticky="w") 
 
         search_entry = ctk.CTkEntry(top_frame, placeholder_text="Search...")
-        search_entry.pack(side=ctk.LEFT, padx=5)
+        search_entry.grid(row=0, column=1, padx=5, sticky="w") 
 
-        search_button = ctk.CTkButton(top_frame, text="Search", fg_color="red", text_color="white")
-        search_button.pack(side=ctk.LEFT, padx=5)
+        search_button = ctk.CTkButton(top_frame, text="Search", fg_color="transparent", text_color="white")
+        search_button.grid(row=0, column=2, padx=5, sticky="w") 
 
         cart_button = ctk.CTkButton(top_frame, text="Cart", fg_color=None, text_color="black")
-        cart_button.pack(side=ctk.RIGHT, padx=5)
+        cart_button.grid(row=0, column=3, padx=5, sticky="e") 
 
         account_button = ctk.CTkButton(top_frame, text="Account", fg_color=None, text_color="black")
-        account_button.pack(side=ctk.RIGHT, padx=5)
+        account_button.grid(row=0, column=4, padx=5, sticky="e") 
 
         # Button Frames
         self.button_frame = ctk.CTkFrame(
@@ -66,14 +73,22 @@ class ShoppingApp(ctk.CTk):
             root, 
             corner_radius=0, 
             width=int(self.screen_width * 0.7),
-            height=int(self.screen_height * 0.5),
+            height=int(self.screen_height * 0.8),
             border_color="red")
         self.cart_frame.pack(fill=ctk.BOTH, expand=True)
 
 
         nav_buttons = ["Home", "Shop", "SCAN", "Calculator", "Contact"]
-        for btn in nav_buttons:
-            nav_button = ctk.CTkButton(self.button_frame, text=btn, fg_color=None, text_color="black")
+        for btn in nav_buttons[::-1]:
+            nav_button = ctk.CTkButton(
+                self.button_frame, 
+                corner_radius=0, 
+                text=btn, 
+                fg_color=None, 
+                text_color="black",
+                height=30,
+                width=50,
+                bg_color="transparent")
             nav_button.pack(side=ctk.RIGHT, padx=5)
 
         
@@ -86,25 +101,16 @@ class ShoppingApp(ctk.CTk):
         left_frame = ctk.CTkFrame(content_frame, corner_radius=0)
         left_frame.pack(side=ctk.LEFT, fill=ctk.BOTH, expand=True, padx=10, pady=10)
 
-        left_canvas = ctk.CTkCanvas(left_frame, bg="lightgray")
-        left_scrollbar = ctk.CTkScrollbar(left_frame, orientation="vertical", command=left_canvas.yview)
-        left_scrollable_frame = ctk.CTkFrame(left_canvas, corner_radius=0)
+        # Use CTkScrollableFrame instead of Canvas
+        left_scrollable_frame = ctk.CTkScrollableFrame(left_frame, width=700, corner_radius=10)
+        left_scrollable_frame.pack(fill=ctk.BOTH, expand=True)
 
-        left_scrollable_frame.bind(
-            "<Configure>", lambda e: left_canvas.configure(scrollregion=left_canvas.bbox("all"))
-        )
-
-        left_canvas.create_window((0, 0), window=left_scrollable_frame, anchor="nw")
-        left_canvas.configure(yscrollcommand=left_scrollbar.set)
-
-        left_canvas.pack(side=ctk.LEFT, fill=ctk.BOTH, expand=True)
-        left_scrollbar.pack(side=ctk.RIGHT, fill=ctk.Y)
-
+        # Add product widgets to the scrollable frame
         for i in range(20):  # Example product list
             product_frame = ctk.CTkFrame(left_scrollable_frame, corner_radius=10, fg_color="white")
-            product_frame.pack(pady=10, padx=10, fill=ctk.X)
+            product_frame.pack(pady=10, padx=10, fill="x")
 
-            product_label = ctk.CTkLabel(product_frame, text=f"Product {i+1}", font=ctk.CTkFont(size=14, weight="bold"))
+            product_label = ctk.CTkLabel(product_frame, text=f"Product {i+1}", font=("Arial", 14))
             product_label.pack(anchor="w", padx=5, pady=2)
 
             barcode_label = ctk.CTkLabel(product_frame, text=f"Barcode: {100000 + i}")
@@ -121,23 +127,13 @@ class ShoppingApp(ctk.CTk):
 
         # Right side (Shopping Cart)
         right_frame = ctk.CTkFrame(content_frame, corner_radius=0)
-        right_frame.pack(side=ctk.RIGHT, fill=ctk.BOTH, padx=10, pady=10)
+        right_frame.pack(side=ctk.RIGHT, fill=ctk.BOTH, expand=True, padx=10, pady=10)
 
-        right_canvas = ctk.CTkCanvas(right_frame, bg="lightgray")
-        right_scrollbar = ctk.CTkScrollbar(right_frame, orientation="vertical", command=right_canvas.yview)
-        right_scrollable_frame = ctk.CTkFrame(right_canvas, corner_radius=0)
+        # Use CTkScrollableFrame for the shopping cart
+        right_scrollable_frame = ctk.CTkScrollableFrame(right_frame, width=300, corner_radius=10)
+        right_scrollable_frame.pack(fill=ctk.BOTH, expand=True)
 
-        right_scrollable_frame.bind(
-            "<Configure>", lambda e: right_canvas.configure(scrollregion=right_canvas.bbox("all"))
-        )
-
-        right_canvas.create_window((0, 0), window=right_scrollable_frame, anchor="nw")
-        right_canvas.configure(yscrollcommand=right_scrollbar.set)
-
-        right_canvas.pack(side=ctk.LEFT, fill=ctk.BOTH, expand=True)
-        right_scrollbar.pack(side=ctk.RIGHT, fill=ctk.Y)
-
-        cart_label = ctk.CTkLabel(right_scrollable_frame, text="Shopping Cart", font=ctk.CTkFont(size=16, weight="bold"))
+        cart_label = ctk.CTkLabel(right_scrollable_frame, text="Shopping Cart", font=("Arial", 16))
         cart_label.pack(pady=10)
 
         # Example cart items
