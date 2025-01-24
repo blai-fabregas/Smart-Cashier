@@ -102,13 +102,32 @@ class ShoppingApp(ctk.CTk):
         left_frame.pack(side=ctk.LEFT, fill=ctk.BOTH, expand=True, padx=10, pady=10)
 
         # Use CTkScrollableFrame instead of Canvas
-        left_scrollable_frame = ctk.CTkScrollableFrame(left_frame, width=700, corner_radius=10)
+        left_scrollable_frame = ctk.CTkScrollableFrame(left_frame, width=720, corner_radius=10)
         left_scrollable_frame.pack(fill=ctk.BOTH, expand=True)
+
+        columns = 3  # Number of products per row
 
         # Add product widgets to the scrollable frame
         for i in range(20):  # Example product list
-            product_frame = ctk.CTkFrame(left_scrollable_frame, corner_radius=10, fg_color="white")
-            product_frame.pack(pady=10, padx=10, fill="x")
+            product_frame = ctk.CTkFrame(
+                left_scrollable_frame, 
+                width=90,
+                height=150,
+                corner_radius=10, 
+                fg_color="white")
+            product_frame.grid(row=i // columns, column=i % columns, padx=10, pady=10, sticky="nsew")
+
+
+            product_image = ctk.CTkLabel(
+                product_frame, 
+                width=200, 
+                height=200, 
+                text=f"Product {i+1}", 
+                font=("Arial", 14),
+                fg_color="gray",
+                corner_radius=10)
+            
+            product_image.pack(anchor="center", padx=10, pady=10)
 
             product_label = ctk.CTkLabel(product_frame, text=f"Product {i+1}", font=("Arial", 14))
             product_label.pack(anchor="w", padx=5, pady=2)
