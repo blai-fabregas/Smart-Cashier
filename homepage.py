@@ -1,6 +1,6 @@
+from textwrap import fill
 import customtkinter as ctk
 from sqlalchemy import column
-from PIL import Image
 
 class ShoppingApp(ctk.CTk):
     def __init__(self):
@@ -25,9 +25,9 @@ class ShoppingApp(ctk.CTk):
 
         self.geometry(f"{window_width}x{window_height}+{x_position}+{y_position}")
 
-        self.configure_frames()
+        self.configure_top()
 
-    def configure_frames(self):
+    def configure_top(self):
         # Main frame/Top frame
         self.main_frame = ctk.CTkFrame(
             self, 
@@ -83,7 +83,7 @@ class ShoppingApp(ctk.CTk):
             border_color="blue")
         self.button_frame.pack(fill=ctk.BOTH)
 
-        # Navigation buttons
+       # Navigation buttons
         nav_buttons = ["Home", "Shop", "SCAN", "Calculator", "Contact"]
         for btn in nav_buttons[::-1]:
             nav_button = ctk.CTkButton(
@@ -97,85 +97,71 @@ class ShoppingApp(ctk.CTk):
                 bg_color="transparent")
             nav_button.pack(side=ctk.RIGHT, padx=5)
 
-        # Cart Frames
+        self.configure_description()
+
+## DELETE HERE IF THERE'S A COLOR PALETTE ALREADY----------------------------------------------------------------------
+    def configure_description(self):
+        # Main container for left and right frames
         self.cart_frame = ctk.CTkFrame(
             self, 
             corner_radius=0, 
-            width=int(self.screen_width * 0.7),
-            height=int(self.screen_height * 1),
+            width=int(self.screen_width),
+            height=int(self.screen_height),
             border_color="red")
         self.cart_frame.pack(fill=ctk.BOTH, expand=True)
 
         # Content frame
-        content_frame = ctk.CTkFrame(self.cart_frame, corner_radius=0)
-        content_frame.pack(fill=ctk.BOTH, expand=True, pady=10)
+        image_frame = ctk.CTkFrame(self.cart_frame, corner_radius=0)
+        image_frame.pack(fill=ctk.BOTH, expand=True, pady=10)
 
-        # Left side (Product List)
-        left_frame = ctk.CTkFrame(content_frame, corner_radius=0)
+        # Left side (Product List) - 70% width
+        left_frame = ctk.CTkFrame(image_frame, corner_radius=0, width=int(self.screen_width * 0.6))
         left_frame.pack(side=ctk.LEFT, fill=ctk.BOTH, expand=True, padx=10, pady=10)
 
-        # Use CTkScrollableFrame instead of Canvas
-        left_scrollable_frame = ctk.CTkScrollableFrame(left_frame, width=720, corner_radius=10)
+        # Use CTkLabel for the left side placeholder
+        left_scrollable_frame = ctk.CTkLabel(
+            left_frame, 
+            corner_radius=10, 
+            fg_color="white", 
+            text="IMAGE HERE",
+            text_color="black")
         left_scrollable_frame.pack(fill=ctk.BOTH, expand=True)
 
-        columns = 3  # Number of products per row
+        # Right side (Shopping Cart) - 30% width
+        right_frame = ctk.CTkFrame(image_frame, corner_radius=0, height=int(self.screen_width * 0.6), width=int(self.screen_width * 0.4))
+        right_frame.pack(side=ctk.RIGHT, padx=10, pady=10, fill=ctk.BOTH)
 
-        # Add product widgets to the scrollable frame
-        for i in range(20):  # Example product list
-            product_frame = ctk.CTkFrame(
-                left_scrollable_frame, 
-                width=90,
-                height=150,
-                corner_radius=10, 
-                fg_color="white")
-            product_frame.grid(row=i // columns, column=i % columns, padx=10, pady=10, sticky="nsew")
+        # Add title label
+        cart_title_label = ctk.CTkLabel(
+            right_frame, 
+            text="Smart Cart", 
+            font=("Arial", 20, "bold"),
+            text_color="black")
+        cart_title_label.grid(row=0, column=0, pady=10)
 
+        # Add description label with wrapping
+        cart_description_label = ctk.CTkLabel(
+            right_frame, 
+            text=(
+"About Smart Shopping Assistant with barcode scanning for managing inventory. "
+"Admins can add, update, or remove items and sync data with an Excel file. "
+"Customers can scan products, add them to the cart, and view a summary with total cost. "
+"Uses Python, SQLite, OpenCV, and pyzbar."
+            ),
+            font=("Arial", 15),
+            text_color="black",
+            wraplength=int(self.screen_width * 0.20))  # Wrap text to fit within 28% of screen width
+        cart_description_label.grid(row=1, column=0, sticky="w",pady=10, padx=10)
 
-            product_image = ctk.CTkLabel(
-                product_frame, 
-                width=200, 
-                height=200, 
-                text=f"Product {i+1}", 
-                font=("Arial", 14),
-                fg_color="gray",
-                corner_radius=10)
-            
-            product_image.pack(anchor="center", padx=10, pady=10)
+        # Add "Start Shopping" Button
+        start_shopping_button = ctk.CTkButton(
+            right_frame, 
+            text="Start Shopping", 
+            font=("Arial", 15),
+            text_color="black")
+        start_shopping_button.grid(row=2, column=0, pady=10)
 
-            product_label = ctk.CTkLabel(product_frame, text=f"Product {i+1}", font=("Arial", 14))
-            product_label.pack(anchor="w", padx=5, pady=2)
-
-            barcode_label = ctk.CTkLabel(product_frame, text=f"Barcode: {100000 + i}")
-            barcode_label.pack(anchor="w", padx=5)
-
-            stock_label = ctk.CTkLabel(product_frame, text=f"Stock: {10 + i}")
-            stock_label.pack(anchor="w", padx=5)
-
-            category_label = ctk.CTkLabel(product_frame, text=f"Category: Category {i%5}")
-            category_label.pack(anchor="w", padx=5)
-
-            add_to_cart_button = ctk.CTkButton(product_frame, text="Add to Cart", fg_color="red", text_color="white")
-            add_to_cart_button.pack(anchor="e", padx=5, pady=5)
-
-        # Right side (Shopping Cart)
-        right_frame = ctk.CTkFrame(content_frame, corner_radius=0)
-        right_frame.pack(side=ctk.RIGHT, fill=ctk.BOTH, expand=True, padx=10, pady=10)
-
-        # Use CTkScrollableFrame for the shopping cart
-        right_scrollable_frame = ctk.CTkScrollableFrame(right_frame, width=300, fg_color="white")
-        right_scrollable_frame.pack(fill=ctk.BOTH, expand=True)
-
-        cart_label = ctk.CTkLabel(right_scrollable_frame, text="Shopping Cart", font=("Arial", 16))
-        cart_label.pack(pady=10)
-
-        # Example cart items
-        for i in range(10):
-            cart_item_label = ctk.CTkLabel(right_scrollable_frame, text=f"{i+1}. Cart Item {i+1}")
-            dash = ctk.CTkLabel(right_scrollable_frame, text=f"{"-"*50}")
-
-            cart_item_label.pack(anchor="w", padx=10, pady=1)
-            dash.pack(anchor="w", padx=10, pady=0)
-
+    
 if __name__ == "__main__":
     #root = ctk.CTk()
     app = ShoppingApp()
