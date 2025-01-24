@@ -1,19 +1,40 @@
 import customtkinter as ctk
+from sqlalchemy import column
 
-class ShoppingApp:
-    def __init__(self, root):
-        self.root = root
-        self.root.title("Shopping App")
-        self.root.geometry("1000x600")
-        ctk.set_appearance_mode("System")  # Options: "System", "Dark", "Light"
-        ctk.set_default_color_theme("blue")
+class ShoppingApp(ctk.CTk):
+    def __init__(self):
+        super().__init__()
+        self.title("Smart Cashier App")
+        self.configure_gui()
 
-        # Main frame
-        main_frame = ctk.CTkFrame(root, corner_radius=0)
-        main_frame.pack(fill=ctk.BOTH, expand=True)
+    def configure_gui(self):
+        # Get screen dimensions
+        self.screen_width = self.winfo_screenwidth()
+        self.screen_height = self.winfo_screenheight()
+
+        # Set the window size dynamically (80% of screen size)
+        window_width = int(self.screen_width * 0.7)
+        window_height = int(self.screen_height * 0.7)
+        x_position = int((self.screen_width - window_width) / 2)
+        y_position = int((self.screen_height - window_height) / 2)
+
+        self.geometry(f"{window_width}x{window_height}+{x_position}+{y_position}")
+
+        self.configure_frames()
+
+    def configure_frames(self):
+        # Main frame/Top frame
+        self.main_frame = ctk.CTkFrame(
+            root, 
+            corner_radius=0, 
+            width=int(self.screen_width * 0.7),
+            height=int(self.screen_height * 0.1),
+            border_color="red")
+        
+        self.main_frame.pack(fill=ctk.BOTH, expand=True)
 
         # Top bar
-        top_frame = ctk.CTkFrame(main_frame, corner_radius=0)
+        top_frame = ctk.CTkFrame(self.main_frame, corner_radius=0)
         top_frame.pack(side=ctk.TOP, fill=ctk.X)
 
         group_label = ctk.CTkLabel(top_frame, text="Group Name", font=ctk.CTkFont(size=16, weight="bold"))
@@ -25,19 +46,40 @@ class ShoppingApp:
         search_button = ctk.CTkButton(top_frame, text="Search", fg_color="red", text_color="white")
         search_button.pack(side=ctk.LEFT, padx=5)
 
-        nav_buttons = ["Home", "Shop", "SCAN", "Calculator", "Contact"]
-        for btn in nav_buttons:
-            nav_button = ctk.CTkButton(top_frame, text=btn, fg_color=None, text_color="black")
-            nav_button.pack(side=ctk.LEFT, padx=5)
-
         cart_button = ctk.CTkButton(top_frame, text="Cart", fg_color=None, text_color="black")
         cart_button.pack(side=ctk.RIGHT, padx=5)
 
         account_button = ctk.CTkButton(top_frame, text="Account", fg_color=None, text_color="black")
         account_button.pack(side=ctk.RIGHT, padx=5)
 
+        # Button Frames
+        self.button_frame = ctk.CTkFrame(
+            root, 
+            corner_radius=0, 
+            width=int(self.screen_width * 0.7),
+            height=int(self.screen_height * 0.1),
+            border_color="blue")
+        self.button_frame.pack(fill=ctk.BOTH, expand=True)
+
+        # Cart Frames
+        self.cart_frame = ctk.CTkFrame(
+            root, 
+            corner_radius=0, 
+            width=int(self.screen_width * 0.7),
+            height=int(self.screen_height * 0.5),
+            border_color="red")
+        self.cart_frame.pack(fill=ctk.BOTH, expand=True)
+
+
+        nav_buttons = ["Home", "Shop", "SCAN", "Calculator", "Contact"]
+        for btn in nav_buttons:
+            nav_button = ctk.CTkButton(self.button_frame, text=btn, fg_color=None, text_color="black")
+            nav_button.pack(side=ctk.RIGHT, padx=5)
+
+        
+
         # Content frame
-        content_frame = ctk.CTkFrame(main_frame, corner_radius=0)
+        content_frame = ctk.CTkFrame(self.cart_frame, corner_radius=0)
         content_frame.pack(fill=ctk.BOTH, expand=True)
 
         # Left side (Product List)
@@ -105,5 +147,5 @@ class ShoppingApp:
 
 if __name__ == "__main__":
     root = ctk.CTk()
-    app = ShoppingApp(root)
+    app = ShoppingApp()
     root.mainloop()
