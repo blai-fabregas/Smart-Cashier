@@ -94,7 +94,7 @@ class ShoppingApp(ctk.CTk):
                 height=30,
                 width=50,
                 bg_color="transparent")
-            nav_button.pack(side=ctk.RIGHT, padx=5, pady=20)
+            nav_button.pack(side=ctk.RIGHT, padx=5)
 
         # Cart Frames
         self.cart_frame = ctk.CTkFrame(
@@ -107,7 +107,7 @@ class ShoppingApp(ctk.CTk):
 
         # Content frame
         content_frame = ctk.CTkFrame(self.cart_frame, corner_radius=0)
-        content_frame.pack(fill=ctk.BOTH, expand=True)
+        content_frame.pack(fill=ctk.BOTH, expand=True, pady=10)
 
         # Left side (Product List)
         left_frame = ctk.CTkFrame(content_frame, corner_radius=0)
@@ -161,16 +161,19 @@ class ShoppingApp(ctk.CTk):
         right_frame.pack(side=ctk.RIGHT, fill=ctk.BOTH, expand=True, padx=10, pady=10)
 
         # Use CTkScrollableFrame for the shopping cart
-        right_scrollable_frame = ctk.CTkScrollableFrame(right_frame, width=300, corner_radius=10)
+        right_scrollable_frame = ctk.CTkScrollableFrame(right_frame, width=300, fg_color="white")
         right_scrollable_frame.pack(fill=ctk.BOTH, expand=True)
 
         cart_label = ctk.CTkLabel(right_scrollable_frame, text="Shopping Cart", font=("Arial", 16))
         cart_label.pack(pady=10)
 
         # Example cart items
-        for i in range(5):
-            cart_item_label = ctk.CTkLabel(right_scrollable_frame, text=f"Cart Item {i+1}")
-            cart_item_label.pack(anchor="w", padx=10, pady=5)
+        for i in range(10):
+            cart_item_label = ctk.CTkLabel(right_scrollable_frame, text=f"{i+1}. Cart Item {i+1}")
+            dash = ctk.CTkLabel(right_scrollable_frame, text=f"{"-"*50}")
+
+            cart_item_label.pack(anchor="w", padx=10, pady=1)
+            dash.pack(anchor="w", padx=10, pady=0)
 
 if __name__ == "__main__":
     #root = ctk.CTk()
