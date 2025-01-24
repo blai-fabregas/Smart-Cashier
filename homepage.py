@@ -1,6 +1,7 @@
 from textwrap import fill
 import customtkinter as ctk
 from sqlalchemy import column
+from PIL import Image
 
 class ShoppingApp(ctk.CTk):
     def __init__(self):
@@ -117,7 +118,7 @@ class ShoppingApp(ctk.CTk):
         # Left side (Product List) - 70% width
         left_frame = ctk.CTkFrame(image_frame, corner_radius=0, width=int(self.screen_width * 0.6))
         left_frame.pack(side=ctk.LEFT, fill=ctk.BOTH, expand=True, padx=10, pady=10)
-
+        """
         # Use CTkLabel for the left side placeholder
         left_scrollable_frame = ctk.CTkLabel(
             left_frame, 
@@ -126,6 +127,22 @@ class ShoppingApp(ctk.CTk):
             text="IMAGE HERE",
             text_color="black")
         left_scrollable_frame.pack(fill=ctk.BOTH, expand=True)
+        """
+        # Load and display the image
+        image_path = "images/home-page.jpg"  
+        try:
+            image = Image.open(image_path)
+            # Resize image to fully match the welcome frame
+            image = image.resize((int(self.screen_width * 0.6), self.screen_height), Image.LANCZOS)
+            self.ctk_image = ctk.CTkImage(light_image=image, dark_image=image, size=(int(self.screen_width * 0.45), int(self.screen_height*0.6)))
+            self.image_label = ctk.CTkLabel(left_frame, image=self.ctk_image, text="")
+            self.image_label.pack(fill="both", expand=True)  # Ensure the label fills the entire frame
+        except Exception as e:
+            self.error_label = ctk.CTkLabel(
+                left_frame, text="Image not found", text_color="white", font=("Arial", 24)
+            )
+            self.error_label.place(relx=0.5, rely=0.5, anchor="center")
+            print(f"Error loading image: {e}")
 
         # Right side (Shopping Cart) - 30% width
         right_frame = ctk.CTkFrame(image_frame, corner_radius=0, height=int(self.screen_width * 0.6), width=int(self.screen_width * 0.4))
