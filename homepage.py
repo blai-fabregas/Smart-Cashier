@@ -13,9 +13,9 @@ class ShoppingApp(ctk.CTk):
         screen_width = self.winfo_screenwidth()
         screen_height = self.winfo_screenheight()
 
-        # Set window size to 80% of screen size
         self.screen_width  = int(screen_width)
         self.screen_height = int(screen_height)
+
         # Set the window size dynamically (80% of screen size)
         window_width = int(screen_width * 0.7)
         window_height = int(screen_height * 0.7)
@@ -32,52 +32,57 @@ class ShoppingApp(ctk.CTk):
             self, 
             corner_radius=0, 
             width=int(self.screen_width * 0.7),
-            height=int(self.screen_height * 0.1))
+            height=50)
         
         self.main_frame.pack(
             fill=ctk.BOTH, 
-            expand=True,
+            #expand=True,
             pady=10)
 
         # Top bar
-        top_frame = ctk.CTkFrame(self.main_frame, corner_radius=0)
-        top_frame.pack(side=ctk.TOP, fill=ctk.X)  # Use `pack` for top_frame itself
+        top_frame = ctk.CTkFrame(self.main_frame, height=30,corner_radius=0)
+        top_frame.pack(side=ctk.TOP, fill=ctk.X, padx=20, pady=20)  # Use `pack` for top_frame itself
+
+        # Configure columns in the grid
+        top_frame.grid_columnconfigure(0, weight=3)
+        top_frame.grid_columnconfigure(1, weight=0)
+        top_frame.grid_columnconfigure(2, weight=0)
 
         # Use `grid` for arranging widgets inside `top_frame`
-        group_label = ctk.CTkLabel(top_frame, text="Group Name", font=ctk.CTkFont(size=16, weight="bold"))
-        group_label.grid(row=0, column=0, padx=10, sticky="w") 
+        group_label = ctk.CTkLabel(
+            top_frame, 
+            text="Group Name", 
+            font=ctk.CTkFont(size=14, weight="bold"),
+            fg_color="transparent")
+        group_label.grid(row=0, column=0, columnspan=2, padx=30, sticky="w") 
 
-        search_entry = ctk.CTkEntry(top_frame, placeholder_text="Search...")
+        search_entry = ctk.CTkEntry(top_frame, width=200, placeholder_text="Search...")
         search_entry.grid(row=0, column=1, padx=5, sticky="w") 
 
-        search_button = ctk.CTkButton(top_frame, text="Search", fg_color="transparent", text_color="white")
-        search_button.grid(row=0, column=2, padx=5, sticky="w") 
+        search_button = ctk.CTkButton(top_frame, width=40, text="Search", fg_color="red", text_color="white")
+        search_button.grid(row=0, column=2,  padx=0, sticky="w") 
 
-        cart_button = ctk.CTkButton(top_frame, text="Cart", fg_color=None, text_color="black")
-        cart_button.grid(row=0, column=3, padx=5, sticky="e") 
+        account_frame = ctk.CTkFrame(top_frame, width=100, height=30, corner_radius=0)
+        account_frame.grid(row=0, column=3, padx=5, sticky="w")
+        cart_button = ctk.CTkButton(account_frame, text="Cart", fg_color=None, text_color="black")
+        cart_button.grid(row=0, column=0, padx=5, sticky="w") 
 
-        account_button = ctk.CTkButton(top_frame, text="Account", fg_color=None, text_color="black")
-        account_button.grid(row=0, column=4, padx=5, sticky="e") 
+        account_button = ctk.CTkButton(account_frame, text="Account", fg_color=None, text_color="black")
+        account_button.grid(row=0, column=1, padx=5, sticky="w") 
 
+        """
+        Shows the middle part of the GUI: Navigation Buttons
+        """
         # Button Frames
         self.button_frame = ctk.CTkFrame(
-            self, 
+            self,
             corner_radius=0, 
             width=int(self.screen_width * 0.7),
-            height=int(self.screen_height * 0.1),
+            height=50,
             border_color="blue")
-        self.button_frame.pack(fill=ctk.BOTH, expand=True)
+        self.button_frame.pack(fill=ctk.BOTH)
 
-        # Cart Frames
-        self.cart_frame = ctk.CTkFrame(
-            self, 
-            corner_radius=0, 
-            width=int(self.screen_width * 0.7),
-            height=int(self.screen_height * 0.8),
-            border_color="red")
-        self.cart_frame.pack(fill=ctk.BOTH, expand=True)
-
-
+        # Navigation buttons
         nav_buttons = ["Home", "Shop", "SCAN", "Calculator", "Contact"]
         for btn in nav_buttons[::-1]:
             nav_button = ctk.CTkButton(
@@ -89,9 +94,16 @@ class ShoppingApp(ctk.CTk):
                 height=30,
                 width=50,
                 bg_color="transparent")
-            nav_button.pack(side=ctk.RIGHT, padx=5)
+            nav_button.pack(side=ctk.RIGHT, padx=5, pady=20)
 
-        
+        # Cart Frames
+        self.cart_frame = ctk.CTkFrame(
+            self, 
+            corner_radius=0, 
+            width=int(self.screen_width * 0.7),
+            height=int(self.screen_height * 1),
+            border_color="red")
+        self.cart_frame.pack(fill=ctk.BOTH, expand=True)
 
         # Content frame
         content_frame = ctk.CTkFrame(self.cart_frame, corner_radius=0)
