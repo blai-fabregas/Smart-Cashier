@@ -29,7 +29,7 @@ class ShoppingApp(ctk.CTk):
     def configure_frames(self):
         # Main frame/Top frame
         self.main_frame = ctk.CTkFrame(
-            root, 
+            self, 
             corner_radius=0, 
             width=int(self.screen_width * 0.7),
             height=int(self.screen_height * 0.1))
@@ -61,7 +61,7 @@ class ShoppingApp(ctk.CTk):
 
         # Button Frames
         self.button_frame = ctk.CTkFrame(
-            root, 
+            self, 
             corner_radius=0, 
             width=int(self.screen_width * 0.7),
             height=int(self.screen_height * 0.1),
@@ -70,7 +70,7 @@ class ShoppingApp(ctk.CTk):
 
         # Cart Frames
         self.cart_frame = ctk.CTkFrame(
-            root, 
+            self, 
             corner_radius=0, 
             width=int(self.screen_width * 0.7),
             height=int(self.screen_height * 0.8),
@@ -142,6 +142,6 @@ class ShoppingApp(ctk.CTk):
             cart_item_label.pack(anchor="w", padx=10, pady=5)
 
 if __name__ == "__main__":
-    root = ctk.CTk()
+    #root = ctk.CTk()
     app = ShoppingApp()
-    root.mainloop()
+    app.mainloop()
