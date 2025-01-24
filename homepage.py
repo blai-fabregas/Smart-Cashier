@@ -181,5 +181,5 @@ class ShoppingApp(ctk.CTk):
     
 if __name__ == "__main__":
     #root = ctk.CTk()
-    app = ShoppingApp()
+    app = ShoppingApp() 
     app.mainloop()
