@@ -1,6 +1,5 @@
 import customtkinter as ctk
-from sqlalchemy import column
-from PIL import Image
+import backend.Stack as Stack
 
 class ShoppingApp(ctk.CTk):
     def __init__(self):
@@ -65,8 +64,8 @@ class ShoppingApp(ctk.CTk):
 
         account_frame = ctk.CTkFrame(top_frame, width=100, height=30, corner_radius=0)
         account_frame.grid(row=0, column=3, padx=5, sticky="w")
-        cart_button = ctk.CTkButton(account_frame, text="Cart", fg_color=None, text_color="black")
-        cart_button.grid(row=0, column=0, padx=5, sticky="w") 
+        history_button = ctk.CTkButton(account_frame, text="History", fg_color=None, text_color="black")
+        history_button.grid(row=0, column=0, padx=5, sticky="w") 
 
         account_button = ctk.CTkButton(account_frame, text="Account", fg_color=None, text_color="black")
         account_button.grid(row=0, column=1, padx=5, sticky="w") 
@@ -115,7 +114,7 @@ class ShoppingApp(ctk.CTk):
         left_frame.pack(side=ctk.LEFT, fill=ctk.BOTH, expand=True, padx=10, pady=10)
 
         # Use CTkScrollableFrame instead of Canvas
-        left_scrollable_frame = ctk.CTkScrollableFrame(left_frame, width=720, corner_radius=10)
+        left_scrollable_frame = ctk.CTkScrollableFrame(left_frame, width=650, corner_radius=10)
         left_scrollable_frame.pack(fill=ctk.BOTH, expand=True)
 
         columns = 3  # Number of products per row
@@ -133,8 +132,8 @@ class ShoppingApp(ctk.CTk):
 
             product_image = ctk.CTkLabel(
                 product_frame, 
-                width=200, 
-                height=200, 
+                width=180, 
+                height=180, 
                 text=f"Product {i+1}", 
                 font=("Arial", 14),
                 fg_color="gray",
@@ -175,6 +174,23 @@ class ShoppingApp(ctk.CTk):
 
             cart_item_label.pack(anchor="w", padx=10, pady=1)
             dash.pack(anchor="w", padx=10, pady=0)
+
+        # Buttons for Shopping Cart
+        button_frames = ctk.CTkFrame(right_scrollable_frame)
+        button_frames.pack(anchor="w", padx=10, pady=1)
+
+        add_to_cart_button = ctk.CTkButton(button_frames, text="Buy Now", fg_color="red", text_color="white")
+        add_to_cart_button.grid(row=0, column=0, padx=5, pady=5)
+        remove_button = ctk.CTkButton(button_frames, text="Remove", fg_color="red", text_color="white")
+        remove_button.grid(row=0, column=1, padx=5, pady=5)
+
+        """
+        FUNCTIONS FOR SHOPPING APP
+        """
+
+        def add_to_cart():
+            cart = Stack()
+
 
 if __name__ == "__main__":
     #root = ctk.CTk()

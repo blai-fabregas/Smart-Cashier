@@ -5,8 +5,8 @@ Shopping.py
     - Create a database for fetching product descriptions.
 
 Welcome Page
-    - Create a database for verification of accounts.
-    - Finish the backend for Login and Signup.
+    - ////Create a database for verification of accounts.
+    - ////Finish the backend for Login and Signup.
 
 Calculator.py
     - Complete the backend for the calculator.
