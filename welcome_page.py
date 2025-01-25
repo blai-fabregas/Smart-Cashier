@@ -2,7 +2,7 @@ from math import log
 import customtkinter as ctk
 from PIL import Image
 from numpy import place
-
+import sqlite3
 
 
 class DynamicGUIApp(ctk.CTk):
@@ -119,7 +119,13 @@ class DynamicGUIApp(ctk.CTk):
         back_button.pack(side="left", padx=10)
 
         # Log In button
-        login_button = ctk.CTkButton(button_frame, text="Log In", fg_color="green", text_color="white", width=100)
+        login_button = ctk.CTkButton(
+            button_frame, 
+            text="Log In", 
+            fg_color="green", 
+            text_color="white", 
+            width=100, 
+            command=lambda: self.check_user(email_entry.get(), password_entry.get()))
         login_button.pack(side="left", padx=10)
 
     def show_signup(self):
@@ -203,7 +209,11 @@ class DynamicGUIApp(ctk.CTk):
             fg_color="green", 
             text_color="white", 
             width=100,
-            command=self.back_to_welcome)
+            command=lambda: 
+                self.sign_up(name_entry.get(), 
+                             email_entry.get(), 
+                             contact_entry.get(), 
+                             password_entry.get()))
         back_button.pack(side="left", padx=10)
 
     def back_to_welcome(self):
@@ -222,6 +232,61 @@ class DynamicGUIApp(ctk.CTk):
         for widget in self.panel_frame.winfo_children():
             widget.destroy()
 
+        """
+        FUNCTIONS FOR WELCOME PAGE
+        """
+
+    def check_user(self, email, password):
+        # Connect to the SQLite database
+        conn = sqlite3.connect('database/accounts')
+        cursor = conn.cursor()
+
+        try:
+            # Query to check if the username and password exist
+            query = "SELECT * FROM accounts WHERE email = ? AND password = ?"
+            cursor.execute(query, (email, password))
+            
+            # Fetch the result
+            result = cursor.fetchone()
+            
+            if result:
+                return True  # Username and password exist
+            else:
+                return False  # No match found
+            
+            print(result)
+        except sqlite3.Error as e:
+            print(f"Database error: {e}")
+            return False
+        finally:
+            # Close the database connection
+            conn.close()
+
+    def sign_up(self, name, email, contact, password):
+        connect = sqlite3.connect("database/accounts")
+        cursor = connect.cursor()
+        try:
+            cursor.execute("""
+                CREATE TABLE IF NOT EXISTS accounts (
+                    name TEXT,
+                    email TEXT,
+                    contact INTEGER,
+                    password TEXT)
+                """)
+            
+            cursor.execute("""
+                INSERT INTO accounts (name, email, contact, password) 
+                VALUES (?, ?, ?, ?)
+                """, (name, email, contact, password))
+
+            connect.commit()
+            connect.close()
+            self.back_to_welcome()
+        except sqlite3.Error as e:
+            print(f"Database error: {e}")
+        finally:
+            # Close the database connection
+            connect.close()
 
 # Run the app
 if __name__ == "__main__":
